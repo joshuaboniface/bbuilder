@@ -163,6 +163,7 @@ def do_task(self, config, hooktype, request):
         tasks = parse_config(event, event_action)
 
         for task in tasks:
+            print(f'Running {task}...')
             os.system(task)
 
         os.chdir('..')
