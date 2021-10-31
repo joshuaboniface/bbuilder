@@ -91,6 +91,7 @@ Within each repository configured for Basic Builder must be a `.bbuilder-tasks.y
 For example, the following `.bbuilder-tasks.yaml` specifies a simple set of `echo` tasks to run on `push`, Tag `create`, and Release `published` events:
 
 ```
+---
 bbuilder:
   push:
     - echo pushed
