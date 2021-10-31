@@ -157,7 +157,7 @@ def do_task(self, config, hooktype, request):
 
         os.chdir('repo')
 
-        print(f"Check out {ref}")
+        print(f"Checking out {ref}")
         os.system(f'git checkout {ref}')
 
         tasks = parse_config(event, event_action)
