@@ -99,7 +99,7 @@ def clone_repository(clone_url, config):
     print(f"Cloning repository...")
     if config['ssh_key'] is not None:
         ssh_key_file = config['ssh_key']
-        os.environ['GIT_SSH_COMMAND='] = f'ssh -i {ssh_key_file} -o IdentitiesOnly=yes'
+        os.environ['GIT_SSH_COMMAND'] = f'ssh -i {ssh_key_file} -o IdentitiesOnly=yes'
 
     os.system(f'git clone {clone_url} repo')
 
