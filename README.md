@@ -70,6 +70,20 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
 
 Webhooks are sent to Basic Builder in JSON POST format, i.e. `POST` method and `application/json` content type.
 
+The URL that is used for the webhook should be in the following format:
+
+   ```
+   http://runnerhost:7999/event/<CI SYSTEM>
+   ```
+
+For example, assuming your runner host is `runner1`, port is the default of `7999`, and you are using Gitea, the URL would be:
+
+   ```
+   http://runner1:7999/event/gitea
+   ```
+
+If you are using an authentication key, ensure you set this in your Webhook configuration as well.
+
 Normally, Basic Builder should be sent only "Repository Events" type webhook events, and only the following events are handled by Basic Builder:
 
  * "Push": A normal push to a branch.
