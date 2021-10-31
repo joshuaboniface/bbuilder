@@ -117,3 +117,13 @@ You can extrapolate from here how to leverage Basic Builder to perform other tas
 **NOTE:** The commands specified in `.bbuilder-tasks.yaml` are always run relative to the root of the repository on the relevant `ref`, either a branch for `push` events, or a tag for `create` or `release` events.
 
 **NOTE:** The commands specified in `.bbuilder-tasks.yaml` are run with the privileges of the `bbuilder worker` process. Normally, this should not be `root`, but if it does need to be, **be very careful and remember that Basic Builder is implicitly trusting the content of this configuration in all repositories it is configured for**.
+
+## Cloning Repositories
+
+The Basic Builder worker will, by default, attempt to clone repositories via HTTP(S). This may cause problems if the repository is private however. To work around this, Basic Builder supports de;poy keys, i.e. dedicated SSH keypairs that the system can use to clone a repository over SSH instead of HTTP(S).
+
+To activate this functionality, you can use the `-k`/`--ssh-key` option to the `bbuilder worker` command or the `BB_SSH_KEY` environment variable to set a path to an SSH private key which will be used.
+
+This key should be kept secure and only readable by the Basic Builder user.
+
+On the repository side, the key should be added as a deploy key (e.g. in Gitea, under the repository `Settings` -> `Deploy Keys`) for the specific repositories that require it.

@@ -6,3 +6,4 @@ BB_LISTEN_ADDR="0.0.0.0"
 BB_LISTEN_PORT="7999"
 BB_AUTH_KEY="I'mALittleTeapot"
 BB_CONCURRENCY=1
+BB_SSH_KEY="/path/to/deploy/id_ed25519"

@@ -32,7 +32,7 @@ def create_workdir(config, task_id):
     rmtree(workdir)
 
 
-def handle_event_gitea(request):
+def handle_event_gitea(request, config):
     event = request[0].get('X-Gitea-Event', None)
     if event is None:
         meta = f'FATAL: No X-Gitea-Event header in request'
@@ -47,7 +47,10 @@ def handle_event_gitea(request):
     if repository is None:
         meta = f'FATAL: No repository information in request JSON body'
         raise TaskFailure(meta)
-    clone_url = repository.get('clone_url')
+    if config['ssh_key'] is not None:
+        clone_url = repository.get('ssh_url')
+    else:
+        clone_url = repository.get('clone_url')
 
     # Get the event action (only relevant to Release events)
     event_action = request_json.get('action', None)
@@ -92,8 +95,12 @@ def handle_event_gitea(request):
     return event, event_action, clone_url, ref
 
 
-def clone_repository(clone_url):
+def clone_repository(clone_url, config):
     print(f"Cloning repository...")
+    if config['ssh_key'] is not None:
+        ssh_key_file = config['ssh_key']
+        os.environ['GIT_SSH_COMMAND='] = f'ssh -i {ssh_key_file} -o IdentitiesOnly=yes'
+
     os.system(f'git clone {clone_url} repo')
 
 
@@ -138,7 +145,7 @@ def do_task(self, config, hooktype, request):
         meta = f'FATAL: Hook type "{hooktype}" is not valid.'
         raise TaskFailure(meta)
 
-    event, event_action, clone_url, ref = hooktype_dict.get(hooktype)(request)
+    event, event_action, clone_url, ref = hooktype_dict.get(hooktype)(request, config)
 
     print(f"Event type: {event}")
     print(f"Clone URL:  {clone_url}")

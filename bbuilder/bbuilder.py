@@ -32,10 +32,21 @@ def print_version(ctx, param, value):
     default=1, show_default=True,
     help='The concurrency of the Celery worker. Envvar: BB_CONCURRENCY'
 )
-def cli_worker(concurrency):
+@click.option(
+    '-k', '--ssh-key', 'ssh_key', envvar='BB_SSH_KEY',
+    default=None,
+    help='An SSH private key (deploy key) to clone repositories. Envvar: BB_SSH_KEY'
+)
+def cli_worker(concurrency, ssh_key):
     """
     Run a Basic Builder worker
+
+    Note: If '-s'/'--ssh-key'/'BB_SSH_KEY' is not specified, Basic Builder will attempt to clone repositories over HTTP(S) instead. They must be publicly accessible without anthentication in this case.
     """
+    if ssh_key == '':
+        ssh_key = None
+    config['ssh_key'] = ssh_key
+
     celery = Celery('bbuilder', broker=config['broker'])
 
     @celery.task(bind=True)
