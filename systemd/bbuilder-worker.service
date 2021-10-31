@@ -1,5 +1,5 @@
 [Unit]
-Description=Basic Builder API
+Description=Basic Builder Worker
 After=network-online.target redis.service
 
 [Service]
