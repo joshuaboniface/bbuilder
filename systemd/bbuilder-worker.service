@@ -5,7 +5,7 @@ After=network-online.target redis.service
 [Service]
 Type=simple
 User=git
-EnvironmentFile = /etc/default/bbuilder
+EnvironmentFile=/etc/default/bbuilder
 ExecStart=/usr/local/bin/bbuilder worker
 Restart=on-failure
 
