@@ -7,11 +7,9 @@ setup(
     install_requires=[
         'Click',
         'PyYAML',
-        'lxml',
-        'colorama',
-        'requests',
-        'requests-toolbelt',
-        'flask'
+        'flask',
+        'celery',
+        'redis'
     ],
     entry_points={
         'console_scripts': [
