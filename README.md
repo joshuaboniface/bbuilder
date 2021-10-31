@@ -120,10 +120,12 @@ You can extrapolate from here how to leverage Basic Builder to perform other tas
 
 ## Cloning Repositories
 
-The Basic Builder worker will, by default, attempt to clone repositories via HTTP(S). This may cause problems if the repository is private however. To work around this, Basic Builder supports de;poy keys, i.e. dedicated SSH keypairs that the system can use to clone a repository over SSH instead of HTTP(S).
+The Basic Builder worker will, by default, attempt to clone repositories via HTTP(S). This may cause problems if the repository is private however. To work around this, Basic Builder supports depoy keys, i.e. dedicated SSH keypairs that the system can use to clone a repository over SSH instead of HTTP(S).
 
 To activate this functionality, you can use the `-k`/`--ssh-key` option to the `bbuilder worker` command or the `BB_SSH_KEY` environment variable to set a path to an SSH private key which will be used.
 
 This key should be kept secure and only readable by the Basic Builder user.
 
 On the repository side, the key should be added as a deploy key (e.g. in Gitea, under the repository `Settings` -> `Deploy Keys`) for the specific repositories that require it.
+
+Note that enabling deploy keys in the worker will require *all repositories* using it to be configured with the key. Once specified, Basic Builder will always use the SSH key method.
