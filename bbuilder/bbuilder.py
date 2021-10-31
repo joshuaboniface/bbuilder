@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 import click
+import hmac
 import bbuilder.lib.worker
 
-from flask import Flask, request
+from hashlib import sha1, sha256
+from flask import Flask, request, abort
 from celery import Celery
 
 DEFAULT_REDIS_QUEUE = 'redis://127.0.0.1:6379/0'
@@ -56,7 +58,12 @@ def cli_worker(concurrency):
     default='7999', show_default=True,
     help='Listen on this port. Envvar: BB_LISTEN_PORT'
 )
-def cli_run(listen_addr, listen_port):
+@click.option(
+    '-k', '--auth-key', 'auth_key', envvar='BB_AUTH_KEY',
+    default=None,
+    help='An authentication key to secure webhook access. Envvar: BB_AUTH_KEY'
+)
+def cli_run(listen_addr, listen_port, auth_key):
     """
     Run the Basic Builder server
     """
@@ -71,7 +78,31 @@ def cli_run(listen_addr, listen_port):
         request_json = request.get_json()
         request_headers = dict(request.headers)
         if request_json is None or request_headers is None:
-            return False
+            abort(400)
+
+        # Authenticate
+        if auth_key is not None:
+            # We use only X-Hub-Signature for compatibility; Gitea supports this
+            header_signature = request_headers.get('X-Hub-Signature-256', None)
+            # If we don't find the sha256 signature, use the sha1 one instead
+            if header_signature is None:
+                header_signature = request_headers.get('X-Hub-Signature', None)
+            # If we found neither, abort
+            if header_signature is None:
+                abort(403)
+
+            sha_name, signature = header_signature.split('=')
+          
+            if sha_name == 'sha256':
+                mac = hmac.new(auth_key.encode('ascii'), msg=request.data, digestmod=sha256)
+            elif sha_name == 'sha1':
+                mac = hmac.new(auth_key.encode('ascii'), msg=request.data, digestmod=sha1)
+            else:
+                abort(501)
+
+            if not str(mac.hexdigest()) == str(signature):
+                abort(403)
+
         flask_request = (request_headers, request_json)
         
         @celery.task(bind=True)
