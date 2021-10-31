@@ -68,6 +68,8 @@ The Python dependencies can be installed via `pip install -r requirements.txt`.
 
 1. Configure your Git system to send webhooks for the event(s) and repositories you want to the Basic Builder API.
 
+1. Optionally, configure Basic Builder to use Systemd via the [example configurations](systemd/).
+
 ## Webhook Configuration
 
 **NOTE:** Currently, Basic Builder supports only Gitea webhooks. However, other systems may be supported in the future.
