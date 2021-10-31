@@ -99,11 +99,13 @@ def clone_repository(clone_url):
 
 def parse_config(event, event_action):
     print(f'Parsing config from ".bbuilder-tasks.yaml"...')
-    with open('.bbuilder-tasks.yaml', 'r') as fh:
-        bbuilder_config = yaml.load(fh, Loader=yaml.BaseLoader).get('bbuilder', None)
-
-    if bbuilder_config is None:
-        meta = f'FATAL: Repository ".bbuilder-tasks.yaml" does not contain valid bbuilder syntax'
+    try:
+        with open('.bbuilder-tasks.yaml', 'r') as fh:
+            bbuilder_config = yaml.load(fh, Loader=yaml.BaseLoader).get('bbuilder', None)
+        if bbuilder_config is None:
+            raise
+    except Exception:
+        meta = f'FATAL: Repository ".bbuilder-tasks.yaml" does not exist or is not valid'
         raise TaskFailure(meta)
 
     tasks = bbuilder_config.get(event, [])
