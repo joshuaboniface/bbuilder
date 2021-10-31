@@ -2,3 +2,4 @@ pyyaml
 flask
 celery
 click
+redis

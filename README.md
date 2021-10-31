@@ -14,15 +14,7 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
 
 1. Redis or another Celery-compatible broker system is required for the communication between the API and the worker(s).
 
-1. `click`
-
-1. `pyyaml`
-
-1. `flask`
-
-1. `celery`
-
-The Python dependencies can be installed via `pip install -r requirements.txt`.
+1. The Python dependencies can be installed via `pip install -r requirements.txt`.
 
 ## Using Basic Builder
 
