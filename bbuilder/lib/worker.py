@@ -153,7 +153,7 @@ def do_task(self, config, hooktype, request):
     with create_workdir(config, task_id) as workdir:
         print(f"Operating under {workdir}")
 
-        clone_repository(clone_url)
+        clone_repository(clone_url, config)
 
         os.chdir('repo')
 
