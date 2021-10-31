@@ -1,0 +1,13 @@
+[Unit]
+Description=Basic Builder API
+After=network-online.target redis.service
+
+[Service]
+Type=simple
+User=git
+EnvironmentFile = /etc/default/bbuilder
+ExecStart=/usr/local/bin/bbuilder run
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
