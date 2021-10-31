@@ -132,4 +132,4 @@ Note that enabling deploy keys in the worker will require *all repositories* usi
 
 ## Why?
 
-I recently moved my Git repositories from a GitLab instance to Gitea. While I love Gitea, I missed the simplicity of GitLab CI. For most of my CI tasks, I'm running one or two simple commands or shell scripts on a single runner system, and I found that all the other CI tools out there were too big, cumbersome, and complex for my very simple needs. Thus, I created Basic Builder to do exactly what I want my CI to do, and nothing more. Hopefully it's useful to someone else as well!
+I recently moved my Git repositories from a GitLab instance to Gitea. While I love Gitea, I missed the simplicity of GitLab CI. For most of my CI tasks, I'm running one or two simple commands or shell scripts on a single runner system, and I found that all the other CI tools out there were too big, cumbersome, and complex for my very simple needs. Thus, I created Basic Builder to do exactly what I need my CI to do, and nothing more. Hopefully it's useful to someone else as well!
