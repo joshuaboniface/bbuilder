@@ -8,7 +8,7 @@ Tasks are specified in the `.bbuilder-tasks.yaml` file in the root of the reposi
 
 At its core Basic Builder has two parts: a Flask API for handling webhook events, and a Celery worker daemon for executing the tasks.
 
-The Flask API portion listens for webhooks from a compatible Git system, and the Celery worker then takes that request, clones the repository to a working directory, checks out the relevant `ref`, reads the tasks from `.bbuilder-tasks.yaml` for the current event type, and then executes them sequentially.
+The Flask API portion listens for webhooks from a compatible Git system, and the Celery worker then takes that request, clones the repository to a working directory, checks out the relevant `ref`, reads the tasks from `.bbuilder-tasks.yaml` for the current event type, executes the task commands sequentially, then cleans up the working directory (no artifacts are preserved; this is up to the tasks).
 
 ## Dependencies
 
