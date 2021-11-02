@@ -58,7 +58,9 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
    $ bbuilder.py worker
    ```
 
-   **NOTE:** The worker runs with `concurrency=1` by default, so all tasks will be run sequentially in the order they are sent. To allow for higher load, consider setting the `-c`/`--concurrency` setting to a higher value. Note however that this may cause some tasks, for instance during release creation, to occur out of order.
+   **NOTE:** The worker runs with `concurrency=1` by default, so all jobs will be run sequentially in the order they are sent. To allow for higher load, consider setting the `-c`/`--concurrency` setting to a higher value. Note however that this may cause some jobs, for instance during release creation (where there is a Push, a Create, then a Release), to occur out of order. If this ordering matters for your tasks, consider leaving this as the default.
+
+   **NOTE:** If you have tasks that take a long time to run, even with higher concurrency, you may have delayed tasks. If you have a repository with a lot of long-running tasks, it may be best to provision it a dedicated Basic Builder API and worker pair.
 
 1. Configure your Git system to send webhooks for the event(s) and repositories you want to the Basic Builder API.
 
