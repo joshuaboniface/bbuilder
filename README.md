@@ -130,7 +130,7 @@ This key should be kept secure and only readable by the Basic Builder user.
 
 On the repository side, the key should be added as a deploy key (e.g. in Gitea, under the repository `Settings` -> `Deploy Keys`) for the specific repositories that require it.
 
-Note that enabling deploy keys in the worker will require *all repositories* using it to be configured with the key. Once specified, Basic Builder will always use the SSH key method.
+Note that enabling deploy keys in the worker will require *all repositories* using it to be configured with the key, as that Basic Builder worker will use SSH for all repositories.
 
 ## Why?
 
