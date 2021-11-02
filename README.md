@@ -50,7 +50,7 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
    $ bbuilder --listen-addr 127.0.0.1 --listen-port 4000
    ```
 
-   **NOTE:** The API server does *not* use TLS/HTTPS. If you need SSL - and you do if this webhook will traverse the public Internet - add a reverse proxy in front of the API.
+   **NOTE:** The API server does *not* use TLS/HTTPS. If you need TLS, which you *do* if this webhook will traverse the public Internet, add a TLS-terminating reverse proxy in front of the API.
 
 1. Run a worker with the following command:
 
