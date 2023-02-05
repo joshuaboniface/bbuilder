@@ -44,14 +44,6 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
    $ bbuilder run
    ```
 
-   By default, the API will listen on `0.0.0.0:7999`; you may change this with the `-a`/`--listen-addr` and `-p`/`--listen-port` options, for example:
-
-   ```
-   $ bbuilder run --listen-addr 127.0.0.1 --listen-port 4000
-   ```
-
-   **NOTE:** The API server does *not* use TLS/HTTPS. If you need TLS, which you *do* if this webhook will traverse the public Internet, add a TLS-terminating reverse proxy in front of the API.
-
    The full help output of the `run` command is:
 
    ```
@@ -66,16 +58,21 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
      -h, --help              Show this message and exit.
    ```
 
+   By default, the API will listen on `0.0.0.0:7999`; you may change this with the `-a`/`--listen-addr` and `-p`/`--listen-port` options, for example:
+
+   ```
+   $ bbuilder run --listen-addr 127.0.0.1 --listen-port 4000
+   ```
+
+   **NOTE:** The API server does *not* use TLS/HTTPS. If you need TLS, which you *do* if this webhook will traverse the public Internet, add a TLS-terminating reverse proxy in front of the API.
+
+   If you wish to secure your webhooks (and you should), use the `--auth-key` option to set a password.
 
 1. Run a worker with the following command:
 
    ```
    $ bbuilder.py worker
    ```
-
-   **NOTE:** The worker runs with `concurrency=1` by default, so all jobs will be run sequentially in the order they are sent. To allow for higher load, consider setting the `-c`/`--concurrency` setting to a higher value. Note however that this may cause some jobs, for instance during release creation (where there is a Push, a Create, then a Release), to occur out of order. If this ordering matters for your tasks, consider leaving this as the default.
-
-   **NOTE:** If you have tasks that take a long time to run, even with higher concurrency, you may have delayed tasks. If you have a repository with a lot of long-running tasks, it may be best to provision it a dedicated Basic Builder API and worker pair.
 
    The full help output of the `worker` command is:
 
@@ -92,6 +89,10 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
      -k, --ssh-key TEXT         An SSH private key (deploy key) to clone repositories. Envvar: BB_SSH_KEY
      -h, --help                 Show this message and exit.
    ```
+
+   **NOTE:** The worker runs with `concurrency=1` by default, so all jobs will be run sequentially in the order they are sent. To allow for higher load, consider setting the `-c`/`--concurrency` setting to a higher value. Note however that this may cause some jobs, for instance during release creation (where there is a Push, a Create, then a Release), to occur out of order. If this ordering matters for your tasks, consider leaving this as the default.
+
+   **NOTE:** If you have tasks that take a long time to run, even with higher concurrency, you may have delayed tasks. If you have a repository with a lot of long-running tasks, it may be best to provision it a dedicated Basic Builder API and worker pair.
 
 1. Configure your Git system to send webhooks for the event(s) and repositories you want to the Basic Builder API.
 
