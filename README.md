@@ -18,7 +18,7 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
 
 ## Using Basic Builder
 
-1. Help, as with all Click applications, can be shown with the `-h`/`--help` flags:
+1. Help, as with all Click applications, can be shown with the `-h`/`--help` flags. The help output of the root showing the configurable global options is:
 
    ```
    $ bbuilder --help
@@ -52,6 +52,21 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
 
    **NOTE:** The API server does *not* use TLS/HTTPS. If you need TLS, which you *do* if this webhook will traverse the public Internet, add a TLS-terminating reverse proxy in front of the API.
 
+   The full help output of the `run` command is:
+
+   ```
+   Usage: bbuilder run [OPTIONS]
+   
+     Run the Basic Builder server
+   
+   Options:
+     -a, --listen-addr TEXT  Listen on this address. Envvar: BB_LISTEN_ADDR  [default: 0.0.0.0]
+     -p, --listen-port TEXT  Listen on this port. Envvar: BB_LISTEN_PORT  [default: 7999]
+     -k, --auth-key TEXT     An authentication key to secure webhook access. Envvar: BB_AUTH_KEY
+     -h, --help              Show this message and exit.
+   ```
+
+
 1. Run a worker with the following command:
 
    ```
@@ -61,6 +76,22 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
    **NOTE:** The worker runs with `concurrency=1` by default, so all jobs will be run sequentially in the order they are sent. To allow for higher load, consider setting the `-c`/`--concurrency` setting to a higher value. Note however that this may cause some jobs, for instance during release creation (where there is a Push, a Create, then a Release), to occur out of order. If this ordering matters for your tasks, consider leaving this as the default.
 
    **NOTE:** If you have tasks that take a long time to run, even with higher concurrency, you may have delayed tasks. If you have a repository with a lot of long-running tasks, it may be best to provision it a dedicated Basic Builder API and worker pair.
+
+   The full help output of the `worker` command is:
+
+   ```
+   Usage: bbuilder worker [OPTIONS]
+   
+     Run a Basic Builder worker
+   
+     Note: If '-s'/'--ssh-key'/'BB_SSH_KEY' is not specified, Basic Builder will attempt to clone repositories over
+     HTTP(S) instead. They must be publicly accessible without anthentication in this case.
+   
+   Options:
+     -c, --concurrency INTEGER  The concurrency of the Celery worker. Envvar: BB_CONCURRENCY  [default: 1]
+     -k, --ssh-key TEXT         An SSH private key (deploy key) to clone repositories. Envvar: BB_SSH_KEY
+     -h, --help                 Show this message and exit.
+   ```
 
 1. Configure your Git system to send webhooks for the event(s) and repositories you want to the Basic Builder API.
 
