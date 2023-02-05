@@ -10,6 +10,10 @@ At its core Basic Builder has two parts: a Flask API for handling webhook events
 
 The Flask API portion listens for webhooks from a compatible Git system, and the Celery worker then takes that request, clones the repository to a working directory, checks out the relevant `ref`, reads the tasks from `.bbuilder-tasks.yaml` for the current event type, executes the task commands sequentially, then cleans up the working directory (no artifacts are preserved; this is up to the tasks).
 
+## Why?
+
+I recently moved my Git repositories from a GitLab instance to Gitea. While I love Gitea, I missed the simplicity of GitLab CI. For most of my CI tasks, I'm running one or two simple commands or shell scripts on a single runner system, and I found that all the other CI tools out there were too big, cumbersome, and complex for my very simple needs. Thus, I created Basic Builder to do exactly what I need my CI to do, and nothing more. Hopefully it's useful to someone else as well!
+
 ## Dependencies
 
 1. Redis or another Celery-compatible broker system is required for the communication between the API and the worker(s).
@@ -163,7 +167,3 @@ This key should be kept secure and only readable by the Basic Builder user.
 On the repository side, the key should be added as a deploy key (e.g. in Gitea, under the repository `Settings` -> `Deploy Keys`) for the specific repositories that require it.
 
 Note that enabling deploy keys in the worker will require *all repositories* using it to be configured with the key, as that Basic Builder worker will use SSH for all repositories.
-
-## Why?
-
-I recently moved my Git repositories from a GitLab instance to Gitea. While I love Gitea, I missed the simplicity of GitLab CI. For most of my CI tasks, I'm running one or two simple commands or shell scripts on a single runner system, and I found that all the other CI tools out there were too big, cumbersome, and complex for my very simple needs. Thus, I created Basic Builder to do exactly what I need my CI to do, and nothing more. Hopefully it's useful to someone else as well!
