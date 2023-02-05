@@ -47,7 +47,7 @@ The Flask API portion listens for webhooks from a compatible Git system, and the
    By default, the API will listen on `0.0.0.0:7999`; you may change this with the `-a`/`--listen-addr` and `-p`/`--listen-port` options, for example:
 
    ```
-   $ bbuilder --listen-addr 127.0.0.1 --listen-port 4000
+   $ bbuilder run --listen-addr 127.0.0.1 --listen-port 4000
    ```
 
    **NOTE:** The API server does *not* use TLS/HTTPS. If you need TLS, which you *do* if this webhook will traverse the public Internet, add a TLS-terminating reverse proxy in front of the API.
