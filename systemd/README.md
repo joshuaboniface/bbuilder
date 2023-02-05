@@ -16,6 +16,6 @@ For demonstration purposes, the `ExecStart` path is `/usr/local/bin/bbuilder`, t
 
 1. If applicable, create your service user.
 
-1. Start the API (`sudo systemctl start bbuilder-api.service`) and Worker (`sudo systemctl start bbuilder-worker.service`).
+1. Enable and start the API (`sudo systemctl enable --now bbuilder-api.service`) and Worker (`sudo systemctl enable --now bbuilder-worker.service`).
 
 1. Configure your webhooks, etc.
